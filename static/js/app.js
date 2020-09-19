@@ -2,7 +2,7 @@
 // Written by Jay Sueno
 
 // read in the json file using "d3.json()" and assign to a variable to be able to call later
-var dataFile = d3.json("../data/samples.json").then(function(data) 
+var dataFile = d3.json("./data/samples.json").then(function(data) 
     {console.log("json data file read", data)});
 
 // d3.json("../data/samples.json").then(function(data){
@@ -35,7 +35,7 @@ var dropDown = d3.select("#selDataset");
 // });
 
 //this could also be done using the d3 methods .selectAll() .data() and .enter()
-d3.json("../data/samples.json").then(function(data) {
+d3.json("./data/samples.json").then(function(data) {
     var idName = data.names;
     dropDown.selectAll("option")
         .data(idName)
@@ -72,13 +72,13 @@ d3.json("../data/samples.json").then(function(data) {
         },
         yaxis: {
             categoryorder: "total ascending"
-        },
-        margin: {
-            l: 50,
-            r: 50,
-            t: 50,
-            b: 50
         }
+        // margin: {
+        //     l: 100,
+        //     r: 100,
+        //     t: 100,
+        //     b: 100
+        // }
     };
 
     Plotly.newPlot("bar", data, layout)
