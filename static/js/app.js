@@ -47,7 +47,7 @@ d3.json("./data/samples.json").then(function(data) {
     
     // pull init values out for bar chart, bubble, and meta data
     // use .reverse() to sort the values
-    var sample_values = data.samples[0].sample_values.slice(0,10);
+    var sample_values = data.samples[0].sample_values.sort((a, b) => b - a).slice(0,10);
     var otu_ids = data.samples[0].otu_ids.slice(0,10);
     var real_otu_ids = otu_ids.map(x => `OTU ${x}`);
     console.log(real_otu_ids);
@@ -83,6 +83,23 @@ d3.json("./data/samples.json").then(function(data) {
 
     Plotly.newPlot("bar", data, layout)
 });
+
+// Listener function will call the optionChanged() function when changed
+d3.selectAll("#selDataset").on("change", optionChanged);
+
+// Define the optionChanged() function
+// This will act as an aggregator function that will call 4 different functions define below
+function optionChanged(newSelection) {
+    updateBar();
+    updateBubble();
+    updateCard();
+    updateGauge()
+};
+
+// // Sort the array in descending order using an arrow function
+// // and assign the results to a variable and print to the console
+// var sortedByArrow = numArray.sort((a, b) => b - a);
+// console.log(sortedByArrow);
 
 // create the bar chart with the selected dataset
 // initialize the dashboard with preloaded data
