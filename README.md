@@ -3,7 +3,7 @@ Javascript, D3.js, JSON, Plotly, Bootstrap4, HTML
 
 ## Live dashboard at: https://jaysueno.github.io/plotly-interactive-visualization-and-dashboard/
 
-![dashboard photo](data\viz1.jpg)
+![dashboard photo](data/viz1.jpg)
 
 There's are four files that work in unison in this app: 
 * HTML with the structure of the web dashboard 
