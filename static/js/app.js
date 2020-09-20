@@ -57,7 +57,8 @@ buildPlot()
 function buildPlot() {
     d3.json(url).then(function(data) {
         // Create an array of the initial subjects metadata and call update function to fill in information
-        // var subject = Object.entries(metadata[0]);
+        var subject = Object.entries(data.metadata[0]);
+        console.log(subject);
         var samples = Object.values(data.samples);
         // Create variables to hold the initial dataset to make plots
         var sample_values = samples[0].sample_values;
@@ -102,67 +103,63 @@ function buildPlot() {
         var data2 = [trace2];
 
         var layout2 = {
-            title: "What is this?",
+            title: "OTUs in Test Subject's Belly Button",
             showlegend: false,
             height: 600,
             width: 1200
         };
 
         Plotly.newPlot("bubble", data2, layout2);
+
+        var card = d3.select(".card-title")
+        Object.entries(data.metadata[0]).forEach(([key, value]) => 
+            card.append("p").text(`${key} : ${value}`)
+        );
+        console.log(data.metadata[0]);
+
+        function optionChanged(newSelection) {
+            console.log(`selected ID num: ${newSelection}`)
+            updateBar();
+            // updateBubble();
+            // updateCard();
+            // updateGauge()
+        };
+
+            function updateBar(selection) {
+            var newSubject = data.filter(info => info.id == selection)
+            // var samples = newSubject
+            var updateBarChart = {
+                x: newSubject.samples[selection].sample_values.slice(0, 10),
+                y: newSubject.otu_ids.map(x => `OTU ${x}`),
+                text: newSubject. otu_labels.slice(0, 10)
+            };
+            Plotly.restyle("bar", updateBarChart)
+        };
     })
 }
-
-
-
-// function init() {
-//     d3.json(url).then(function(data) {     
-//     var sample_values = data.samples[0].sample_values.sort((a, b) => b - a).slice(0,10);
-//     var otu_ids = data.samples[0].otu_ids.slice(0,10);
-//     var real_otu_ids = otu_ids.map(x => `OTU ${x}`);
-//     console.log(real_otu_ids);
-//     var otu_labels = data.samples[0].otu_labels.slice(0,10);
-//     console.log(sample_values, otu_ids, otu_labels);
-
-//     var trace = {
-//         x: sample_values,
-//         y: real_otu_ids,
-//         text: otu_labels,
-//         // name: "otu values",
-//         type: "bar",
-//         orientation: "h"
-//     };
-
-//     var data = [trace];
-
-//     var layout = {
-//         title: "OTU Values",
-//         xaxis: {
-//             title: "this is a test"
-//         },
-//         yaxis: {
-//             categoryorder: "total ascending"
-//         }
-//         // margin: {
-//         //     l: 100,
-//         //     r: 100,
-//         //     t: 100,
-//         //     b: 100
-//         // }
-//     };
-
-//     Plotly.newPlot("bar", data, layout)
-// });
 
 
 // Define the optionChanged() function
 // We do not need to create an EVENT LISTENER because it's already in the HTML <select> node as 'onchange="optionChanged, this.value"'
 // This will act as an aggregator function that will call 4 different functions define below
 function optionChanged(newSelection) {
-    console.log(`selected ID num: ${this.value}`)
-    // updateBar();
-    // updateBubble();
-    // updateCard();
-    // updateGauge()
+    d3.json(url).then(function(data) {
+        console.log(`selected ID num: ${newSelection}`)
+        updateBar();
+        // updateBubble();
+        // updateCard();
+        // updateGauge()
+        function updateBar(selection) {
+            var newSubject = selection.filter(info => info.id == selection)
+            // var samples = newSubject
+            var updateBarChart = {
+                x: newSubject.samples[selection].sample_values.slice(0, 10),
+                y: newSubject.otu_ids.map(x => `OTU ${x}`),
+                text: newSubject. otu_labels.slice(0, 10)
+            };
+            Plotly.restyle("bar", updateBarChart)
+        }
+    });
 };
 
 // // Sort the array in descending order using an arrow function
