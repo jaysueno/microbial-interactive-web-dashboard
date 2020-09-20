@@ -9,8 +9,6 @@ var dataFile = d3.json(url).then(function(data)
     {console.log("json data file read", data)}
 );
 
-
-
 // Menu Bar - Option 1 append the dropdown menu to include all the names of the dataset using D3
 // We will use the .append() function to the "<select></>" node
 function dropDownMenu() {
@@ -46,15 +44,9 @@ dropDownMenu(console.log('dropdown created'));
     // pull init values out for bar chart, bubble, and meta data
     // use .reverse() to sort the values
 
-function init() {
-    buildPlot();
-    buildBubble();
-    buildMeta();
-    BuildGauge();
-}
-buildPlot()
+init()
 
-function buildPlot() {
+function init() {
     d3.json(url).then(function(data) {
         // Create an array of the initial subjects metadata and call update function to fill in information
         var subject = Object.entries(data.metadata[0]);
@@ -117,17 +109,17 @@ function buildPlot() {
         );
         console.log(data.metadata[0]);
 
-        
-
         var data3 = [
             {
                 domain: { x: [0, 1], y: [0, 1] },
                 value: data.metadata[6].wfreq,
                 title: { text: "Wash Per Week" },
                 type: "indicator",
-                mode: "gauge+number"
-                gauge: { axis: { range: [null, 500] } }
-
+                mode: "gauge+number",
+                gauge: {
+                    // Set to axis to between 0 and 9 washes per week
+                    axis: {range: [0, 9] },
+                }
             }
         ];
         console.log(data.metadata[6].wfreq)
@@ -135,7 +127,6 @@ function buildPlot() {
         Plotly.newPlot('gauge', data3);
     })
 }
-
 
 // Define the optionChanged() function
 // We do not need to create an EVENT LISTENER because it's already in the HTML <select> node as 'onchange="optionChanged, this.value"'
@@ -188,25 +179,5 @@ function optionChanged(newSelection) {
             var value = newSubject[0].wfreq;
             Plotly.restyle("gauge", "value", [value])
         }
-        // console.log(data.metadata[0]);
-
-        // }
     });
 };
-
-// // Sort the array in descending order using an arrow function
-// // and assign the results to a variable and print to the console
-// var sortedByArrow = numArray.sort((a, b) => b - a);
-// console.log(sortedByArrow);
-
-// create the bar chart with the selected dataset
-// initialize the dashboard with preloaded data
-// function init() {
-//     var filteredID = 
-//     var trace = {
-//         // we need to iterate through an array of objects within a list of objects
-//         x: 
-//     };
-// }
-
-// init();
