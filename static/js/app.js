@@ -105,8 +105,8 @@ function buildPlot() {
         var layout2 = {
             title: "OTUs in Test Subject's Belly Button",
             showlegend: false,
-            height: 600,
-            width: 1200
+            // height: 600,
+            // width: 1200
         };
 
         Plotly.newPlot("bubble", data2, layout2);
@@ -117,6 +117,22 @@ function buildPlot() {
         );
         console.log(data.metadata[0]);
 
+        
+
+        var data3 = [
+            {
+                domain: { x: [0, 1], y: [0, 1] },
+                value: data.metadata[6].wfreq,
+                title: { text: "Wash Per Week" },
+                type: "indicator",
+                mode: "gauge+number"
+                gauge: { axis: { range: [null, 500] } }
+
+            }
+        ];
+        console.log(data.metadata[6].wfreq)
+        var layout3 = { width: 500, height: 500, margin: { t: 0, b: 0 } };
+        Plotly.newPlot('gauge', data3);
     })
 }
 
@@ -130,7 +146,7 @@ function optionChanged(newSelection) {
         updateBar(newSelection);
         updateBubble(newSelection);
         updateCard();
-        // updateGauge()
+        updateGauge()
 
         function updateBar() {
             var newSubject = data.samples.filter(x => x.id == newSelection);
@@ -164,6 +180,13 @@ function optionChanged(newSelection) {
             Object.entries(newSubject[0]).forEach(([key, value]) => 
             card.append("p").text(`${key} : ${value}`)
             )
+        }
+
+        function updateGauge() {
+            var newSubject = data.metadata.filter(x => x.id == newSelection);
+            console.log(newSubject[0].wfreq);
+            var value = newSubject[0].wfreq;
+            Plotly.restyle("gauge", "value", [value])
         }
         // console.log(data.metadata[0]);
 
