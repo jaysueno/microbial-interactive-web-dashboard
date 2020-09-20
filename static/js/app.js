@@ -1,99 +1,168 @@
 // Plotly application to showcase my skills in creating engaging visualization and a web dashboard 
 // Written by Jay Sueno
 
-// read in the json file using "d3.json()" and assign to a variable to be able to call later
-var dataFile = d3.json("./data/samples.json").then(function(data) 
-    {console.log("json data file read", data)});
+// Create the URL variable to be called in future server promise calls
+var url = `./data/samples.json`
 
-// d3.json("../data/samples.json").then(function(data){
-//     console.log(data.names)
-// })
+// Read in the json file using "d3.json()" and assign to a variable to be able to call later
+var dataFile = d3.json(url).then(function(data) 
+    {console.log("json data file read", data)}
+);
 
 
-// optionChanged() is a function in the drop down dial box
-// id for listener ".selDataset"
 
-// create a listener for the dropdown menue and assign it a variable for future use
-var dropDown = d3.select("#selDataset");
+// Menu Bar - Option 1 append the dropdown menu to include all the names of the dataset using D3
+// We will use the .append() function to the "<select></>" node
+function dropDownMenu() {
+    d3.json(url).then(function(data) {
+        // Create a variable to reference the names of the datasets
+        // this create an array of the name values from the json object
+        var idName = data.names;
+        idName.forEach(name => {
+            d3.select("#selDataset")
+            .append("option")
+            .attr("value", name)
+            .text(name);
+        })
+    });
+}
 
-// create a variable to reference the names of the datasets
-// this create an array of the names values from the json object
-// var idName = data.names;
+// Call the dropdown function
+dropDownMenu(console.log('dropdown created'));
 
-// append the dropdown menu to include all the names of the dataset using D3
-// we will use the .append() function to the "<select></>" node
-// d3.json("../data/samples.json").then(function(data) {
-//     // create a variable to reference the names of the datasets
-//     // this create an array of the names values from the json object
-//     var idName = data.names;
-//     idName.forEach(name => {
-//         dropDown.append("option")
-//         .attr("value", name)
-//         .text(name);
-//     console.log(idName);
-//     })
-// });
-
-//this could also be done using the d3 methods .selectAll() .data() and .enter()
-d3.json("./data/samples.json").then(function(data) {
-    var idName = data.names;
-    dropDown.selectAll("option")
-        .data(idName)
-        .enter()
-        .append("option")
-        // we map the data that's already merged and pull out each item directly 
-        .attr("value", (i) => i)
-        .text(i => i);
-    
+// Menu Bar - Option 2: use d3 methods .selectAll() .data() and .enter()
+// var menuBar = function() {
+//     d3.json(url).then(function(data) {
+//         var idName = data.names;
+//         dropDown.selectAll("option")
+//             .data(idName)
+//             .enter()
+//             .append("option")
+//             // we map the data that's already merged and pull out each item directly 
+//             .attr("value", (i) => i)
+//             .text(i => i)
+//     });
+// }
     // pull init values out for bar chart, bubble, and meta data
     // use .reverse() to sort the values
-    var sample_values = data.samples[0].sample_values.sort((a, b) => b - a).slice(0,10);
-    var otu_ids = data.samples[0].otu_ids.slice(0,10);
-    var real_otu_ids = otu_ids.map(x => `OTU ${x}`);
-    console.log(real_otu_ids);
-    var otu_labels = data.samples[0].otu_labels.slice(0,10);
-    console.log(sample_values, otu_ids, otu_labels);
 
-    var trace = {
-        x: sample_values,
-        y: real_otu_ids,
-        text: otu_labels,
-        // name: "otu values",
-        type: "bar",
-        orientation: "h"
-    };
+function init() {
+    buildPlot();
+    buildBubble();
+    buildMeta();
+    BuildGauge();
+}
+buildPlot()
 
-    var data = [trace];
+function buildPlot() {
+    d3.json(url).then(function(data) {
+        // Create an array of the initial subjects metadata and call update function to fill in information
+        // var subject = Object.entries(metadata[0]);
+        var samples = Object.values(data.samples);
+        // Create variables to hold the initial dataset to make plots
+        var sample_values = samples[0].sample_values;
+        var otu_ids = samples[0].otu_ids;
+        var otu_labels = samples[0].otu_labels;
+        // console.log(sample_values, otu_ids, otu_labels); 
 
-    var layout = {
-        title: "OTU Values",
-        xaxis: {
-            title: "this is a test"
-        },
-        yaxis: {
-            categoryorder: "total ascending"
-        }
-        // margin: {
-        //     l: 100,
-        //     r: 100,
-        //     t: 100,
-        //     b: 100
-        // }
-    };
+        var trace1 = {
+            x: sample_values.slice(0, 10),
+            y: otu_ids.map(x => `OTU ${x}`),
+            text: otu_labels.slice(0, 10),
+            // name: "otu values",
+            type: "bar",
+            orientation: "h"
+        };
+    
+        var data1 = [trace1];
+    
+        var layout1 = {
+            title: "Top 10 OTU Values",
+            xaxis: {
+                title: "Number of Values in Sample"
+            },
+            yaxis: {
+                categoryorder: "total ascending"
+            }
+        };
+    
+        Plotly.newPlot("bar", data1, layout1)
 
-    Plotly.newPlot("bar", data, layout)
-});
+        var trace2 = {
+            x: otu_ids.slice(0,30),
+            y: sample_values.slice(0,30),
+            mode: "markers",
+            marker: {
+                size: sample_values.slice(0,30),
+                color: otu_ids
+            },
+            text: otu_labels.slice(0,30)
+        };
 
-// Listener function will call the optionChanged() function when changed
-d3.selectAll("#selDataset").on("change", optionChanged);
+        var data2 = [trace2];
+
+        var layout2 = {
+            title: "What is this?",
+            showlegend: false,
+            height: 600,
+            width: 1200
+        };
+
+        Plotly.newPlot("bubble", data2, layout2);
+    })
+}
+
+
+
+// function init() {
+//     d3.json(url).then(function(data) {     
+//     var sample_values = data.samples[0].sample_values.sort((a, b) => b - a).slice(0,10);
+//     var otu_ids = data.samples[0].otu_ids.slice(0,10);
+//     var real_otu_ids = otu_ids.map(x => `OTU ${x}`);
+//     console.log(real_otu_ids);
+//     var otu_labels = data.samples[0].otu_labels.slice(0,10);
+//     console.log(sample_values, otu_ids, otu_labels);
+
+//     var trace = {
+//         x: sample_values,
+//         y: real_otu_ids,
+//         text: otu_labels,
+//         // name: "otu values",
+//         type: "bar",
+//         orientation: "h"
+//     };
+
+//     var data = [trace];
+
+//     var layout = {
+//         title: "OTU Values",
+//         xaxis: {
+//             title: "this is a test"
+//         },
+//         yaxis: {
+//             categoryorder: "total ascending"
+//         }
+//         // margin: {
+//         //     l: 100,
+//         //     r: 100,
+//         //     t: 100,
+//         //     b: 100
+//         // }
+//     };
+
+//     Plotly.newPlot("bar", data, layout)
+// });
+
 
 // Define the optionChanged() function
+// We do not need to create an EVENT LISTENER because it's already in the HTML <select> node as 'onchange="optionChanged, this.value"'
 // This will act as an aggregator function that will call 4 different functions define below
 function optionChanged(newSelection) {
-    updateBar();
-    updateBubble();
-    updateCard();
-    updateGauge()
+    console.log(`selected ID num: ${this.value}`)
+    // updateBar();
+    // updateBubble();
+    // updateCard();
+    // updateGauge()
 };
 
 // // Sort the array in descending order using an arrow function
@@ -111,24 +180,4 @@ function optionChanged(newSelection) {
 //     };
 // }
 
-/**
- * Helper function to select stock data
- * Returns an array of values
- * @param {array} rows
- * @param {integer} index
- * index 0 - id (or name)
- * index 1 - otu_ids (array)
- * index 2 - otu_labels (array)
- * index 3 - sample_values (array)
- * index 4 - Close
- * index 5 - Volume
- */
-
-// we will also need to use a filter function using the unpack function to match the #selDataset with "id"
-
-function unpack(rows, index) {
-    return rows.map(function(row) {
-      return row[index];
-    });
-  }
-
+// init();
