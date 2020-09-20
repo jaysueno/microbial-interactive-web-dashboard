@@ -129,7 +129,7 @@ function optionChanged(newSelection) {
         console.log(`selected ID num: ${newSelection}`)
         updateBar(newSelection);
         updateBubble(newSelection);
-        // updateCard();
+        updateCard();
         // updateGauge()
 
         function updateBar() {
@@ -145,6 +145,7 @@ function optionChanged(newSelection) {
             Plotly.restyle("bar", 'y', [y]);
             Plotly.restyle("bar", 'text', [text])
         }
+        
         function updateBubble() {
             var newSubject = data.samples.filter(x => x.id == newSelection);
             var x = newSubject[0].otu_ids.slice(0, 30);
@@ -154,8 +155,19 @@ function optionChanged(newSelection) {
             Plotly.restyle("bubble", 'x', [x]);
             Plotly.restyle("bubble", 'y', [y]);
             Plotly.restyle("bubble", 'text', [text])
-
         };
+
+        function updateCard() {
+            var newSubject = data.metadata.filter(x => x.id == newSelection);
+            console.log(newSubject);
+            var card = d3.select(".card-title").html("");
+            Object.entries(newSubject[0]).forEach(([key, value]) => 
+            card.append("p").text(`${key} : ${value}`)
+            )
+        }
+        // console.log(data.metadata[0]);
+
+        // }
     });
 };
 
