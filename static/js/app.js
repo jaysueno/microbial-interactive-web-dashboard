@@ -117,24 +117,6 @@ function buildPlot() {
         );
         console.log(data.metadata[0]);
 
-        function optionChanged(newSelection) {
-            console.log(`selected ID num: ${newSelection}`)
-            updateBar();
-            // updateBubble();
-            // updateCard();
-            // updateGauge()
-        };
-
-            function updateBar(selection) {
-            var newSubject = data.filter(info => info.id == selection)
-            // var samples = newSubject
-            var updateBarChart = {
-                x: newSubject.samples[selection].sample_values.slice(0, 10),
-                y: newSubject.otu_ids.map(x => `OTU ${x}`),
-                text: newSubject. otu_labels.slice(0, 10)
-            };
-            Plotly.restyle("bar", updateBarChart)
-        };
     })
 }
 
@@ -145,20 +127,35 @@ function buildPlot() {
 function optionChanged(newSelection) {
     d3.json(url).then(function(data) {
         console.log(`selected ID num: ${newSelection}`)
-        updateBar();
-        // updateBubble();
+        updateBar(newSelection);
+        updateBubble(newSelection);
         // updateCard();
         // updateGauge()
-        function updateBar(selection) {
-            var newSubject = selection.filter(info => info.id == selection)
-            // var samples = newSubject
-            var updateBarChart = {
-                x: newSubject.samples[selection].sample_values.slice(0, 10),
-                y: newSubject.otu_ids.map(x => `OTU ${x}`),
-                text: newSubject. otu_labels.slice(0, 10)
-            };
-            Plotly.restyle("bar", updateBarChart)
+
+        function updateBar() {
+            var newSubject = data.samples.filter(x => x.id == newSelection);
+            console.log(newSubject);
+            console.log(newSubject[0].sample_values);
+            
+            var x = newSubject[0].sample_values.slice(0, 10);
+            var y = newSubject[0].otu_ids.map(x => `OTU ${x}`);
+            var text = newSubject[0]. otu_labels.slice(0, 10);
+            
+            Plotly.restyle("bar", 'x', [x]);
+            Plotly.restyle("bar", 'y', [y]);
+            Plotly.restyle("bar", 'text', [text])
         }
+        function updateBubble() {
+            var newSubject = data.samples.filter(x => x.id == newSelection);
+            var x = newSubject[0].otu_ids.slice(0, 30);
+            var y = newSubject[0].sample_values.slice(0, 30);
+            var text = newSubject[0]. otu_labels.slice(0, 30);
+
+            Plotly.restyle("bubble", 'x', [x]);
+            Plotly.restyle("bubble", 'y', [y]);
+            Plotly.restyle("bubble", 'text', [text])
+
+        };
     });
 };
 
