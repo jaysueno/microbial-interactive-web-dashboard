@@ -8,7 +8,7 @@ There's are four files that work in unison in this app:
 * JSON Data file
 * Javascript to manipulate the [Document Object Model](https://www.w3.org/TR/REC-DOM-Level-1/introduction.html) of the HTML
 
-## Step 1: Plotly
+## Steps
 
 1. Use the D3 library to read in `samples.json`.
 
@@ -31,10 +31,19 @@ There's are four files that work in unison in this app:
 6. Create a gauge chart to plot the weekly washing frequency of the individual.
 * Adapt the Gauge Chart from <https://plot.ly/javascript/gauge-charts/> to plot the weekly washing frequency of the individual.
 * You will need to modify the example gauge code to account for values ranging from 0 through 9.
-* Update the chart whenever a new sample is selected.
 
 7. Update all of the plots any time that a new sample is selected.
 
-### Please learn more about me at [LinkedIn](https://www.linkedin.com/in/jay-sueno-359a274/)
+## Deployment
+
+* Deploy your app to a free static page hosting service, such as GitHub Pages. Submit the links to your deployment and your GitHub repo.
+
+* Ensure your repository has regular commits (i.e. 20+ commits) and a thorough README.md file
+
+### About the Data
+
+Hulcr, J. et al.(2012) _A Jungle in There: Bacteria in Belly Buttons are Highly Diverse, but Predictable_. Retrieved from: [http://robdunnlab.com/projects/belly-button-biodiversity/results-and-data/](http://robdunnlab.com/projects/belly-button-biodiversity/results-and-data/)
+
+### To learn more about Jay Sueno visit his [LinkedIn](https://www.linkedin.com/in/jay-sueno-359a274/)
 
 ##### All rights reserved 2020. All code is created and owned by Jay Sueno. If you use his code, please visit his LinkedIn and give him a a skill endorsement in python and data science. Visit him at: https://www.linkedin.com/in/jay-sueno-359a274/
