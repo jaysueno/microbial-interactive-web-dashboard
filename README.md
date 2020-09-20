@@ -35,6 +35,6 @@ There's are four files that work in unison in this app:
 
 7. Update all of the plots any time that a new sample is selected.
 
-### All rights reserved 2020. All code is created and owned by Jay Sueno. If you use his code, please visit his LinkedIn and give him a a skill endorsement in python and data science. Visit him at:
+### Please learn more about me at [LinkedIn](https://www.linkedin.com/in/jay-sueno-359a274/)
 
-### https://www.linkedin.com/in/jay-sueno-359a274/
+##### All rights reserved 2020. All code is created and owned by Jay Sueno. If you use his code, please visit his LinkedIn and give him a a skill endorsement in python and data science. Visit him at: https://www.linkedin.com/in/jay-sueno-359a274/
