@@ -1,5 +1,7 @@
 // Plotly application to showcase my skills in creating engaging visualization and a web dashboard 
-// Written by Jay Sueno
+
+// Written By Jay Sueno 
+// Please check out my LinkedIn - https://www.linkedin.com/in/jay-sueno-359a274/
 
 // Create the URL variable to be called in future server promise calls
 var url = `./data/samples.json`
