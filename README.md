@@ -1,7 +1,7 @@
 # Plotly - How to create an interactive dashboard
 Javascript, D3.js, JSON, Plotly, Bootstrap4, HTML
 
-## Live dashboard at: https://jaysueno.github.io/plotly-interactive-visualization-and-dashboard/
+## Live dashboard at: https://jaysueno.github.io/microbial-interactive-web-dashboard/
 
 ![dashboard photo](data/viz1.jpg)
 
